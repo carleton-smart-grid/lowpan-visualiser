@@ -55,7 +55,7 @@ public class NodeCanvas extends JPanel
 			int newXrangeEnd = (xStart + newXrangeInc);
 			
 			drawTree(g, child, y + yIncrement, yIncrement, newXrangeStart, newXrangeEnd);			
-			//draw a line from x,y to 
+			//draw a line from [x,y] to [(newXrangeInc/2 + newXrangeStart), (y + yIncrement)]
 		}
 	}
 	
