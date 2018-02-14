@@ -63,7 +63,7 @@ public class NodeCanvas extends JPanel
 	public void draw() {
 		int yIncrement = (int) Math.floor(SIM_Y/nodes.getDepth());
 		if (nodes != null) {
-			drawTree(/*Graphics g?*/nothing, nodes, SIM_Y, yIncrement, 0, SIM_X);
+			drawTree(/*Graphics g?*/something, nodes, SIM_Y, yIncrement, 0, SIM_X);
 		}
 	}
 	

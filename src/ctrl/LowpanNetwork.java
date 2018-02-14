@@ -20,7 +20,6 @@ package ctrl;
 //import packages
 import datatype.LowpanNode;
 import datatype.Tree;
-import ui.NodeCanvas;
 
 
 
@@ -41,21 +40,32 @@ public class LowpanNetwork
 	public LowpanNetwork()
 	{
 		//initialize
-		network = new Tree<LowpanNode>(null);
+		network = null;
 	}
 	
 	
 	//create a new node
 	public boolean addNode(String name, int rank, LowpanNode parent)
 	{
+		LowpanNode nodeToAdd = new LowpanNode(name, rank);
 		if (parent == null && network == null) { //it's the dodag root, add it as the root if it's empty
-			network = new Tree<LowpanNode>(new LowpanNode(name, rank));
+			System.out.println("Adding the root");
+			network = new Tree<LowpanNode>(nodeToAdd);
 			return true;
 		}
 		
-		if (network == null) return false; //we're waiting for the dodag
+		if (network == null) {
+			System.out.println("You are not the dodag and there is no dodag");
+			return false; //we're waiting for the dodag
+		}
 		
-		if (parent == null) return true; //it's already been added, so technically this add was successful
+		if (parent == null) { //This used to be a node on the network, and it's just left the network
+			if (network.contains(nodeToAdd)) {
+				network.removeNode(nodeToAdd);
+				return true;
+			}
+			return false;
+		}
 		
 		LowpanNode node = new LowpanNode(name, rank);
 		
@@ -92,17 +102,5 @@ public class LowpanNetwork
 		NetListener nethandler = new NetListener(network); //have to send it so that the callback function exists
 		nethandler.start(); //start this thread so it can listen for packets
 		
-		/*
-		HashSet<LowpanNode> nodes = sim.getNodes();
-		boolean flag = true;
-		for (LowpanNode node : nodes)
-		{
-			if (flag)
-			{
-				System.out.println("treeify!");
-				node.treeify();
-				flag = false;
-			}
-		}	*/
 	}
 }

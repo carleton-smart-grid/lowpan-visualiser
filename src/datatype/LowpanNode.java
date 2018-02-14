@@ -16,7 +16,6 @@ package datatype;
 //import libraries
 
 //import packages
-import ctrl.LowpanNetwork;
 
 
 

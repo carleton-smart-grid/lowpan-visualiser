@@ -19,9 +19,16 @@ public class Tree<T> {
 	
 	//Recursively calls addNode working down the tree, if every single function returns false, the parent can't be found and the root function returns false
 	public boolean addNode(T nodeToAdd, T parentToLeaf) {
+//		System.out.println("Searching in " + data.toString());
+		if (data.equals(parentToLeaf)) { //the root starts the chain, so this check has to be done
+//			System.out.println("Found the parent, it is " + getData().toString());
+			this.addChild(nodeToAdd);
+			return true;
+		}
 		boolean recursiveReturn = false;
 		for (Tree<T> item : children) {
 			if (item.getData().equals(parentToLeaf)) { //base case, item is the parent
+//				System.out.println("Found the parent, it is " + item.getData().toString());
 				return item.addChild(nodeToAdd);
 			}
 			recursiveReturn = item.addNode(nodeToAdd, parentToLeaf);
@@ -55,21 +62,36 @@ public class Tree<T> {
 		
 	}
 	
-	public boolean removeNode(T nodeToRemove) {
-		if (children.contains(nodeToRemove)) {
-			children.remove(nodeToRemove);
-			return true;
-		}
-		
+	public boolean removeNode(T nodeToRemove) {		
 		boolean rc = false;
 		
 		for (Tree<T> child : children) {
-			rc = removeNode(nodeToRemove);
+			if (child.getData().equals(nodeToRemove)){ //base case
+				children.remove(child);
+				return true;
+			}
+			rc = child.removeNode(nodeToRemove);
 			if (rc) return true;
 		}
 		
 		return false;
 		
+	}
+	
+	public boolean contains(T node) {
+		boolean rc = false;		
+		
+		for (Tree<T> child : children) {
+			
+			if (child.getData().equals(node)) { //base case
+				System.out.println("Found the node");
+				return true;
+			}
+			
+			rc = child.contains(node);
+			if (rc) return true;
+		}
+		return false;
 	}
 
 
@@ -79,9 +101,13 @@ public class Tree<T> {
 	
 	public void printNode() {
 		int numChildren = children.size();
+		for	(int i = 0; i < numChildren; ++i) {
+			System.out.print("Root is : \t");
+		}
 		System.out.println(data);
+		System.out.print("Children are: " );
 		for (Tree<T> child : children) {
-			System.out.print(child);			
+			System.out.print(child.getData() + "\t");			
 		}
 		System.out.println("");
 	}

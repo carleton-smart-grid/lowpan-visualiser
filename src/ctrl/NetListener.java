@@ -11,6 +11,7 @@ public class NetListener extends Thread {
 	
 	public static final int BUF_SIZE = 1024;
 	public static final int NUM_FIELDS = 4;
+	public static final int NUM_PRIMARY_FIELDS = 2;
 	
 	LowpanNetwork simulator;
 	DatagramSocket sock;
@@ -40,6 +41,10 @@ public class NetListener extends Thread {
 			String dataString = new String(buf);
 			
 			String[] data = dataString.split(",");
+			
+			if (data.length == NUM_PRIMARY_FIELDS) { //there's no parent for this node
+				simulator.addNode(data[0], Integer.parseInt(data[1]), null);
+			}
 			
 			if (data.length != NUM_FIELDS) continue; //completely drop invalid packets
 			
