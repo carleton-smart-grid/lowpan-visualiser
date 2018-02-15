@@ -27,7 +27,6 @@ import datatype.Tree;
 public class LowpanNetwork
 {
 	//declaring static class constants
-	public static final String WINDOW_NAME = "6LoWPAN Mesh Network Sim";
 	public static final int MAX_X = 1000;
 	public static final int MAX_Y = 650;
 	public static final int MIN_XY = 10;
@@ -35,6 +34,7 @@ public class LowpanNetwork
 	
 	//declaring local instance variables
 	private Tree<LowpanNode> network;
+	private HashSet<LowpanNode> orphanList;
 	
 	//generic constructor
 	public LowpanNetwork()
@@ -55,20 +55,24 @@ public class LowpanNetwork
 		}
 		
 		if (network == null) {
-			System.out.println("You are not the dodag and there is no dodag");
+			System.out.println("You are not the dodag and there is no dodag, adding to orphanList");
+			orphanList.add(nodeToAdd);
 			return false; //we're waiting for the dodag
 		}
 		
 		if (parent == null) { //This used to be a node on the network, and it's just left the network
 			if (network.contains(nodeToAdd)) {
-				System.out.println("This node reported that it has no parent, removng it");
+				System.out.println("This node reported that it has no parent, moving to orphanList");
 				network.removeNode(nodeToAdd);
+				orphanList.add(nodeToAdd);
 				return true;
 			}
 			return false;
 		}
 		
 		LowpanNode node = new LowpanNode(name, rank);
+		
+		orphanList.remove(nodeToAdd); //don't bother checking, takes just as long if not longer than always removing
 		
 		return network.addNode(node, parent);
 	}
@@ -95,6 +99,10 @@ public class LowpanNetwork
 		return network;
 	}	
 	
+	
+	public HashSet<LowpanNode> getOrphans(){
+		return orphanList;
+	}
 	
 	//main runtime
 	public static void main(String[] args)

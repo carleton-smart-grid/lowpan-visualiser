@@ -35,6 +35,8 @@ public class NodeCanvas extends JPanel
 	
 	Tree<LowpanNode> nodes;
 	
+	
+	
 	//generic constructor
 	public NodeCanvas(Tree<LowpanNode> nodes)
 	{
@@ -64,6 +66,10 @@ public class NodeCanvas extends JPanel
 		int yIncrement = (int) Math.floor(SIM_Y/nodes.getDepth());
 		if (nodes != null) {
 			drawTree(/*Graphics g?*/something, nodes, SIM_Y, yIncrement, 0, SIM_X);
+		}
+		for (LowpanNode orphan : network.getOrphans()) {
+			//draw the orphans
+			System.out.println("\t\tOrphan : " + orphan.getName());
 		}
 	}
 	
