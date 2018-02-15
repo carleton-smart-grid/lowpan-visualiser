@@ -61,6 +61,7 @@ public class LowpanNetwork
 		
 		if (parent == null) { //This used to be a node on the network, and it's just left the network
 			if (network.contains(nodeToAdd)) {
+				System.out.println("This node reported that it has no parent, removng it");
 				network.removeNode(nodeToAdd);
 				return true;
 			}

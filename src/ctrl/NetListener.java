@@ -12,6 +12,7 @@ public class NetListener extends Thread {
 	public static final int BUF_SIZE = 1024;
 	public static final int NUM_FIELDS = 4;
 	public static final int NUM_PRIMARY_FIELDS = 2;
+	public static final int PORT_NUMBER = 34217;
 	
 	LowpanNetwork simulator;
 	DatagramSocket sock;
@@ -20,7 +21,7 @@ public class NetListener extends Thread {
 	public NetListener(LowpanNetwork sim) {
 		simulator = sim;
 		try {
-			sock = new DatagramSocket(34217);
+			sock = new DatagramSocket(PORT_NUMBER);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
@@ -39,16 +40,26 @@ public class NetListener extends Thread {
 			}
 			
 			String dataString = new String(buf);
+			dataString = dataString.replace("\n", "").replace("\r", "");
 			
 			String[] data = dataString.split(",");
 			
+			for (int i = 0; i < data.length; ++i) {
+				data[i] = data[i].trim();
+			}
+			
 			if (data.length == NUM_PRIMARY_FIELDS) { //there's no parent for this node
-				simulator.addNode(data[0], Integer.parseInt(data[1]), null);
+				simulator.addNode(data[0], Integer.parseInt(data[1].trim()), null);
+				System.out.println("Adding " + data[0] + " with rank " + data[1]);
+				continue;
 			}
 			
 			if (data.length != NUM_FIELDS) continue; //completely drop invalid packets
 			
 			simulator.addNode(data[0], Integer.parseInt(data[1]), new LowpanNode(data[2], Integer.parseInt(data[3])));
+			
+			System.out.println("Adding " + data[0] + " with rank " + data[1] + " and parent " + data[2] + " : " + data[3]);
+			simulator.getNetwork().printNode();
 			
 		}
 		
