@@ -30,7 +30,7 @@ public class NodeFrame extends JFrame {
 		
 		canvasPane.setBackground(Color.WHITE);
 		canvasPane.setBorder(BorderFactory.createLineBorder(Color.black));
-		canvasPane.setPreferredSize(new Dimension(LowpanNetwork.MAX_X, LowpanNetwork.MAX_Y));
+		canvasPane.setPreferredSize(new Dimension(DEFAULT_WINDOW_X, DEFAULT_WINDOW_Y));
 		
 		this.setContentPane(canvasPane);
 		this.setVisible(true);

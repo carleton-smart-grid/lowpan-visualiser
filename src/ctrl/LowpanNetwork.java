@@ -30,8 +30,6 @@ import ui.NodeFrame;
 public class LowpanNetwork
 {
 	//declaring static class constants
-	public static final int MAX_X = 1000;
-	public static final int MAX_Y = 650;
 	public static final int MIN_XY = 10;
 	public static final int DODAG_RANK = 256;
 	public static final String DEFAULT_NAME = "new_node";

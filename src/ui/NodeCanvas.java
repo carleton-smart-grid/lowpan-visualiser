@@ -27,8 +27,6 @@ public class NodeCanvas extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	//declaring static class constants
-	private static final int SIM_X = LowpanNetwork.MAX_X;
-	private static final int SIM_Y = LowpanNetwork.MAX_Y;
 	private static final int YMARGIN = 30;
 	private static final int XMARGIN = 0;
 	private static final int ROUTING_THICCNESS = 4;
