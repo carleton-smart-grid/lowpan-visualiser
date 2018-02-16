@@ -14,6 +14,7 @@ package ui;
 
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
@@ -73,10 +74,13 @@ public class NodeCanvas extends JPanel
 	
 	
 	public void draw(Graphics g) {
+		Dimension d = this.getSize();
+		int ySize = (int) d.getHeight();
+		int xSize = (int) d.getWidth();
 		if (network.getNetwork() == null) return; //wait until there's things to print
-		int yIncrement = (int) Math.floor(SIM_Y/network.getNetwork().getDepth());
+		int yIncrement = (int) Math.floor(ySize/network.getNetwork().getDepth());
 		if (network.getNetwork() != null) {
-			drawTree(g, network.getNetwork(), YMARGIN, yIncrement, 0, SIM_X - XMARGIN);
+			drawTree(g, network.getNetwork(), YMARGIN, yIncrement, 0, xSize - XMARGIN);
 		}
 		for (LowpanNode orphan : network.getOrphans()) {
 			//draw the orphans
