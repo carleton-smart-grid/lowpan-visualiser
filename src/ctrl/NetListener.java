@@ -33,6 +33,10 @@ public class NetListener extends Thread {
 	
 	public void run() {
 		while(true) {
+			
+			//Some paths through the while loop have a continue, and dont reach the draw at the end, so do it here instead
+			frame.update();
+			
 			byte[] buf = new byte[BUF_SIZE];
 			DatagramPacket p = new DatagramPacket(buf, BUF_SIZE);
 			try {
@@ -63,8 +67,6 @@ public class NetListener extends Thread {
 			
 			System.out.println("Adding " + data[0] + " with rank " + data[1] + " and parent " + data[2] + " : " + data[3]);
 			simulator.getNetwork().printNode();
-			
-			frame.update();
 		}
 		
 	}
