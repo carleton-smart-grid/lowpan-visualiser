@@ -31,6 +31,7 @@ public class LowpanNetwork
 	public static final int MAX_X = 1000;
 	public static final int MAX_Y = 650;
 	public static final int MIN_XY = 10;
+	public static final int DODAG_RANK = 256;
 	public static final String DEFAULT_NAME = "new_node";
 	
 	//declaring local instance variables
@@ -60,6 +61,9 @@ public class LowpanNetwork
 		}
 		
 		if (parent == null) { //This used to be a node on the network, and it's just left the network
+			if(rank == DODAG_RANK) { //don't add the dodag again and don't remove it, it never has a parent
+				return true;
+			}
 			if (network.contains(nodeToAdd)) {
 				System.out.println("This node reported that it has no parent, removng it");
 				network.removeNode(nodeToAdd);

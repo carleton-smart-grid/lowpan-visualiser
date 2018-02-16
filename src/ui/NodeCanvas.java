@@ -23,23 +23,21 @@ import datatype.Tree;
 
 public class NodeCanvas extends JPanel 
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	//declaring static class constants
-	private static final double SIM_X = LowpanNetwork.MAX_X;
-	private static final double SIM_Y = LowpanNetwork.MAX_Y;
+	private static final int SIM_X = LowpanNetwork.MAX_X;
+	private static final int SIM_Y = LowpanNetwork.MAX_Y;
 	private static final int ROUTING_THICCNESS = 4;
 	public static final int NODE_DIAMETER = 20;
 	
+	Graphics g;
 	Tree<LowpanNode> nodes;
 	
 	//generic constructor
 	public NodeCanvas(Tree<LowpanNode> nodes)
 	{
-		super();
 		this.nodes = nodes;
+		
 	}
 	
 		
@@ -60,10 +58,10 @@ public class NodeCanvas extends JPanel
 	}
 	
 	
-	public void draw() {
+	public void draw(Graphics g) {
 		int yIncrement = (int) Math.floor(SIM_Y/nodes.getDepth());
 		if (nodes != null) {
-			drawTree(/*Graphics g?*/something, nodes, SIM_Y, yIncrement, 0, SIM_X);
+			drawTree(g, nodes, SIM_Y, yIncrement, 0, SIM_X);
 		}
 	}
 	
