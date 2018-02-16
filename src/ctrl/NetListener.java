@@ -6,6 +6,7 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 
 import datatype.LowpanNode;
+import ui.NodeFrame;
 
 public class NetListener extends Thread {
 	
@@ -16,9 +17,11 @@ public class NetListener extends Thread {
 	
 	LowpanNetwork simulator;
 	DatagramSocket sock;
+	NodeFrame frame;
 	
 	
-	public NetListener(LowpanNetwork sim) {
+	public NetListener(LowpanNetwork sim, NodeFrame frame) {
+		this.frame = frame;
 		simulator = sim;
 		try {
 			sock = new DatagramSocket(PORT_NUMBER);
@@ -61,6 +64,7 @@ public class NetListener extends Thread {
 			System.out.println("Adding " + data[0] + " with rank " + data[1] + " and parent " + data[2] + " : " + data[3]);
 			simulator.getNetwork().printNode();
 			
+			frame.update();
 		}
 		
 	}

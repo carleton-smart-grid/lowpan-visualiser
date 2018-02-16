@@ -26,7 +26,6 @@ public class LowpanNode
 	private String name;
 	private int rank;
 	
-	
 	//generic constructor
 	public LowpanNode(String name, int rank)
 	{

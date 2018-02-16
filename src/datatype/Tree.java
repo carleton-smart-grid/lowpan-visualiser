@@ -15,7 +15,7 @@ public class Tree<T> {
 		children = new HashSet<Tree<T>>();
 		parent = null;
 	}
-	
+
 	
 	//Recursively calls addNode working down the tree, if every single function returns false, the parent can't be found and the root function returns false
 	public boolean addNode(T nodeToAdd, T parentToLeaf) {
@@ -37,7 +37,7 @@ public class Tree<T> {
 		return false;
 	}
 	
-	private T getData() {
+	public T getData() {
 		return data;
 	}
 

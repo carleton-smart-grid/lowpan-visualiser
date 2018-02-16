@@ -15,11 +15,14 @@
 package ctrl;
 
 
+import java.util.HashSet;
+
 //import libraries
 
 //import packages
 import datatype.LowpanNode;
 import datatype.Tree;
+import ui.NodeFrame;
 
 
 
@@ -42,8 +45,9 @@ public class LowpanNetwork
 	{
 		//initialize
 		network = null;
+		orphanList = new HashSet<LowpanNode>();
 	}
-	
+
 	
 	//create a new node
 	public boolean addNode(String name, int rank, LowpanNode parent)
@@ -79,6 +83,8 @@ public class LowpanNetwork
 		orphanList.remove(nodeToAdd); //don't bother checking, takes just as long if not longer than always removing
 		
 		return network.addNode(node, parent);
+		
+		
 	}
 	
 	//remove a node from simulation
@@ -112,7 +118,8 @@ public class LowpanNetwork
 	public static void main(String[] args)
 	{
 		LowpanNetwork network = new LowpanNetwork();
-		NetListener nethandler = new NetListener(network); //have to send it so that the callback function exists
+		NodeFrame nodeFrame = new NodeFrame(network);
+		NetListener nethandler = new NetListener(network, nodeFrame); //have to send it so that the callback function exists
 		nethandler.start(); //start this thread so it can listen for packets
 		
 	}
