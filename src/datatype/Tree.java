@@ -55,7 +55,7 @@ public class Tree<T> {
 		ArrayList<Integer> nums = new ArrayList<Integer>();
 		
 		for (Tree<T> item : children) {
-			nums.add(item.getDepth());
+			nums.add(item.getDepth() + 1);
 		}
 		
 		return Collections.max(nums);
