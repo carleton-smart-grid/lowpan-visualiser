@@ -31,6 +31,7 @@ public class NodeCanvas extends JPanel
 	private static final int XMARGIN = 0;
 	private static final int ROUTING_THICCNESS = 4;
 	public static final int NODE_DIAMETER = 20;
+	public static final int CHILDLIST_WIDTH = 150;
 	
 	Graphics g;
 	LowpanNetwork network;
@@ -78,10 +79,13 @@ public class NodeCanvas extends JPanel
 		if (network.getNetwork() == null) return; //wait until there's things to print
 		int yIncrement = (int) Math.floor(ySize/network.getNetwork().getDepth());
 		if (network.getNetwork() != null) {
-			drawTree(g, network.getNetwork(), YMARGIN, yIncrement, 0, xSize - XMARGIN);
+			drawTree(g, network.getNetwork(), YMARGIN, yIncrement, 0, (xSize - XMARGIN) - CHILDLIST_WIDTH);
 		}
 		for (LowpanNode orphan : network.getOrphans()) {
-			//draw the orphans
+			int centroidX = x - NODE_DIAMETER/2;
+			int centroidY = y - NODE_DIAMETER/2;
+			g.setColor(Color.BLACK);
+			g.fillOval(centroidX, centroidY, NODE_DIAMETER, NODE_DIAMETER);
 			System.out.println("\t\tOrphan : " + orphan.getName());
 		}
 	}
