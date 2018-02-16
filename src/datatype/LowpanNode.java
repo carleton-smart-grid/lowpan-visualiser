@@ -55,7 +55,7 @@ public class LowpanNode
 	 */
 	
 	@Override
-	//generic equals
+//	generic equals
 	public boolean equals(Object obj)
 	{
 		if (this == obj)
@@ -65,14 +65,30 @@ public class LowpanNode
 		else if (obj instanceof LowpanNode)
 		{
 			LowpanNode otherNode = (LowpanNode)obj;
-			return (name.equals(otherNode.name) && rank == otherNode.getRank());
+			return (name.equals(otherNode.name));
 		}
 		else
 		{
 			return false;
 		}
 	}
-	
+//	
+//	public boolean equalsByName(Object obj) {
+//		if (this == obj)
+//		{
+//			return true;
+//		}
+//		else if (obj instanceof LowpanNode)
+//		{
+//			LowpanNode otherNode = (LowpanNode)obj;
+//			return (name.equals(otherNode.name));
+//		}
+//		else
+//		{
+//			return false;
+//		}
+//	}
+//	
 	
 	@Override
 	//nice printable
