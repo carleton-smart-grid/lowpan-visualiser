@@ -74,7 +74,7 @@ public class LowpanNetwork
 		}
 			
 //		System.out.println("OrphanList.contains returned " + orphanList.contains(nodeToAdd));
-//		System.out.println("OrphanList.remove returned " + orphanList.remove(nodeToAdd)); //don't bother checking, takes just as long if not longer than always removing
+		orphanList.remove(nodeToAdd); //don't bother checking, takes just as long if not longer than always removing
 		
 		return network.addNode(nodeToAdd, parent);
 		
