@@ -94,6 +94,7 @@ public class NodeCanvas extends JPanel
 				g.fillOval(centroidX, centroidY, NODE_DIAMETER, NODE_DIAMETER);
 				String s = orphan.getName() + " : " + orphan.getRank();
 				g.drawString(s, x - (s.length() * HALFFONTWIDTH), y - NODE_DIAMETER);
+				++i;
 			}
 		}
 	}
