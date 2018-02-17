@@ -67,20 +67,16 @@ public class LowpanNetwork
 			if(rank == DODAG_RANK) { //don't add the dodag again and don't remove it, it never has a parent
 				return true;
 			}
-			if (network.contains(nodeToAdd)) {
-				System.out.println("This node reported that it has no parent, moving to orphanList");
-				network.removeNode(nodeToAdd);
-				orphanList.add(nodeToAdd);
-				return true;
-			}
-			return false;
+			System.out.println("This node reported that it has no parent, moving to orphanList");
+			network.removeNode(nodeToAdd);
+			orphanList.add(nodeToAdd);
+			return true;
 		}
+			
+//		System.out.println("OrphanList.contains returned " + orphanList.contains(nodeToAdd));
+//		System.out.println("OrphanList.remove returned " + orphanList.remove(nodeToAdd)); //don't bother checking, takes just as long if not longer than always removing
 		
-		LowpanNode node = new LowpanNode(name, rank);
-		
-		orphanList.remove(nodeToAdd); //don't bother checking, takes just as long if not longer than always removing
-		
-		return network.addNode(node, parent);
+		return network.addNode(nodeToAdd, parent);
 		
 		
 	}
