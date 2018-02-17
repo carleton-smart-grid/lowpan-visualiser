@@ -50,10 +50,6 @@ public class LowpanNode
 	}
 	
 	
-	/* convert into tree structure with self as root
-	 * guaranteed to only include shortest path(s) to any destination node
-	 */
-	
 	@Override
 //	generic equals
 	public boolean equals(Object obj)
@@ -72,7 +68,13 @@ public class LowpanNode
 			return false;
 		}
 	}
-//	
+
+	
+	@Override
+	public int hashCode() {
+		return name.hashCode(); //same name different rank should return the same hashcode
+	}
+	
 //	public boolean equalsByName(Object obj) {
 //		if (this == obj)
 //		{
