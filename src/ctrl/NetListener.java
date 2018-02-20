@@ -66,7 +66,9 @@ public class NetListener extends Thread {
 			simulator.addNode(data[0], Integer.parseInt(data[1]), new LowpanNode(data[2], Integer.parseInt(data[3])));
 			
 			System.out.println("Adding " + data[0] + " with rank " + data[1] + " and parent " + data[2] + " : " + data[3]);
-			simulator.getNetwork().printNode();
+			if (simulator.getNetwork() != null) {
+				simulator.getNetwork().printNode();
+			}
 		}
 		
 	}
