@@ -51,6 +51,7 @@ public class LowpanNetwork
 	public boolean addNode(String name, int rank, LowpanNode parent)
 	{
 		LowpanNode nodeToAdd = new LowpanNode(name, rank);
+		orphanList.remove(nodeToAdd); //don't bother checking, takes just as long if not longer than always removing
 		if (parent == null && network == null) { //it's the dodag root, add it as the root if it's empty
 			System.out.println("Adding the root");
 			network = new Tree<LowpanNode>(nodeToAdd);
@@ -58,7 +59,7 @@ public class LowpanNetwork
 		}
 		
 		if (network == null) {
-			System.out.println("You are not the dodag and there is no dodag, adding to orphanList");
+			System.out.println("You are not the dodag and there is no dodag, adding" + nodeToAdd + " to orphanList");
 			orphanList.add(nodeToAdd);
 			return false; //we're waiting for the dodag
 		}
@@ -74,7 +75,6 @@ public class LowpanNetwork
 		}
 			
 //		System.out.println("OrphanList.contains returned " + orphanList.contains(nodeToAdd));
-		orphanList.remove(nodeToAdd); //don't bother checking, takes just as long if not longer than always removing
 		
 		return network.addNode(nodeToAdd, parent);
 		

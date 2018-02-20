@@ -86,6 +86,7 @@ public class NodeCanvas extends JPanel
 			int i = 0;
 			yIncrement = ySize/(network.getOrphans().size());
 			for (LowpanNode orphan : network.getOrphans()) {
+//				System.out.println(orphan);
 				int x = (xSize - (CHILDLIST_WIDTH/2));
 				int centroidX = x - NODE_DIAMETER/2;
 				int y = YMARGIN + (yIncrement * i);
