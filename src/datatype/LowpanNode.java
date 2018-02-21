@@ -12,6 +12,7 @@
  */
 package datatype;
 
+import ctrl.LowpanNetwork;
 
 //import libraries
 
@@ -22,6 +23,9 @@ package datatype;
 
 public class LowpanNode 
 {
+
+	public static final int DODAG_RANK = LowpanNetwork.INFINITE_RANK;
+	public static final int INFINITE_RANK = LowpanNetwork.INFINITE_RANK;
 	
 	private String name;
 	private int rank;
@@ -47,6 +51,10 @@ public class LowpanNode
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+	
+	public boolean isInfiniteRank() {
+		return (rank == INFINITE_RANK);
 	}
 	
 	

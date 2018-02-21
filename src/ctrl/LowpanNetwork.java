@@ -32,6 +32,7 @@ public class LowpanNetwork
 	//declaring static class constants
 	public static final int MIN_XY = 10;
 	public static final int DODAG_RANK = 256;
+	public static final int INFINITE_RANK = 65535;
 	public static final String DEFAULT_NAME = "new_node";
 	
 	//declaring local instance variables
@@ -51,14 +52,16 @@ public class LowpanNetwork
 	public boolean addNode(String name, int rank, LowpanNode parent)
 	{
 		LowpanNode nodeToAdd = new LowpanNode(name, rank);
-		if (parent == null && network == null) { //it's the dodag root, add it as the root if it's empty
+		orphanList.remove(nodeToAdd); //don't bother checking, takes just as long if not longer than always removing
+		network.removeNode(nodeToAdd); //remove it here as well
+		if (parent == null && network == null && rank == DODAG_RANK) { //it's the dodag root, add it as the root if it's empty
 			System.out.println("Adding the root");
 			network = new Tree<LowpanNode>(nodeToAdd);
 			return true;
 		}
 		
 		if (network == null) {
-			System.out.println("You are not the dodag and there is no dodag, adding to orphanList");
+			System.out.println("You are not the dodag and there is no dodag, adding" + nodeToAdd + " to orphanList");
 			orphanList.add(nodeToAdd);
 			return false; //we're waiting for the dodag
 		}
@@ -68,13 +71,11 @@ public class LowpanNetwork
 				return true;
 			}
 			System.out.println("This node reported that it has no parent, moving to orphanList");
-			network.removeNode(nodeToAdd);
 			orphanList.add(nodeToAdd);
 			return true;
 		}
 			
 //		System.out.println("OrphanList.contains returned " + orphanList.contains(nodeToAdd));
-//		System.out.println("OrphanList.remove returned " + orphanList.remove(nodeToAdd)); //don't bother checking, takes just as long if not longer than always removing
 		
 		return network.addNode(nodeToAdd, parent);
 		

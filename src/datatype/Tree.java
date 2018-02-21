@@ -43,7 +43,11 @@ public class Tree<T> {
 
 
 	public boolean addChild(T nodeToAdd) {
-		children.add(new Tree<T>(nodeToAdd));
+		Tree<T> tToAdd = new Tree<T>(nodeToAdd);
+		if (children.contains(tToAdd)) {
+//			children.remove(tToAdd);
+		}
+		children.add(tToAdd);
 		return true;
 	}
 	
@@ -98,6 +102,31 @@ public class Tree<T> {
 	public HashSet<Tree<T>> getChildren() {
 		return children;
 	}
+	
+	@Override
+	public int hashCode() {
+		return data.hashCode();
+	}
+	
+	@Override
+//	generic equals
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		else if (obj instanceof Tree)
+		{
+			Tree<?> other = (Tree<?>)obj;
+			return (data.equals(other.getData()));
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	
 	public void printNode() {
 		int numChildren = children.size();
