@@ -44,10 +44,10 @@ public class Tree<T> {
 
 	public boolean addChild(T nodeToAdd) {
 		Tree<T> tToAdd = new Tree<T>(nodeToAdd);
-		if (children.contains(tToAdd)) {
+		if (!children.contains(tToAdd)) {
 //			children.remove(tToAdd);
+			children.add(tToAdd);
 		}
-		children.add(tToAdd);
 		return true;
 	}
 	
@@ -119,7 +119,7 @@ public class Tree<T> {
 		else if (obj instanceof Tree)
 		{
 			Tree<?> other = (Tree<?>)obj;
-			return (data.equals(other.getData()));
+			return (data.equals(other.getData()));//only compare the data (the name)
 		}
 		else
 		{
