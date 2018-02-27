@@ -26,7 +26,7 @@ public class LowpanNode
 
 	public static final int DODAG_RANK = LowpanNetwork.INFINITE_RANK;
 	public static final int INFINITE_RANK = LowpanNetwork.INFINITE_RANK;
-	public static final long EXPIRY_TIME = 10000; //10 seconds, if a node doesn't check in in this long, it's dead
+	public static final long EXPIRY_TIME = 30000; //10 seconds, if a node doesn't check in in this long, it's dead
 	
 	private String name;
 	private int rank;

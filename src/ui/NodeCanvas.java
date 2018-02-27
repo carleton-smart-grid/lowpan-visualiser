@@ -37,7 +37,7 @@ public class NodeCanvas extends JPanel
 	public static final int NODE_DIAMETER = 20;
 	public static final int CHILDLIST_WIDTH = 250;
 	public static final int HALFFONTWIDTH_16 = 3;
-	public static final int HALFFONTWIDTH_20 = 4;
+	public static final int HALFFONTWIDTH_20 = 6;
 	public static final int TEXTOFFSET = (int) ((int) NODE_DIAMETER/1.5); //Java complains if there isn't a double cast here and I don't know why (because 
 	
 	Graphics g;
@@ -106,6 +106,8 @@ public class NodeCanvas extends JPanel
 		g.drawLine((xSize - XMARGIN) - CHILDLIST_WIDTH, 0, (xSize - XMARGIN) - CHILDLIST_WIDTH, ySize);
 		String s = "Lowpan Network";
 		g.drawString(s, drawableXSize/2 - (s.length() * HALFFONTWIDTH_20), YTOPMARGIN/2); //the top margin is where the drawing goes
+		s = "Orphaned Nodes";
+		g.drawString(s, drawableXSize + (CHILDLIST_WIDTH/2) - (s.length() * HALFFONTWIDTH_20), YTOPMARGIN/2); //the top margin is where the drawing goes
 		
 		int yIncrement;
 		g.setFont(new Font("ComicSans", Font.PLAIN, 16));
@@ -117,7 +119,7 @@ public class NodeCanvas extends JPanel
 		
 		if (!network.getOrphans().isEmpty()) {
 			int i = 0;
-			yIncrement = ySize/(network.getOrphans().size());
+			yIncrement = drawableYSize/(network.getOrphans().size());
 			for (LowpanNode orphan : network.getOrphans()) {
 //				System.out.println(orphan);
 				int x = (xSize - (CHILDLIST_WIDTH/2));
