@@ -38,7 +38,7 @@ public class NodeFrame extends JFrame {
 	}
 	
 	public void update() {
-		System.out.println("repainting");
+//		System.out.println("repainting");
 		canvasPane.repaint();
 	}
 

@@ -2,17 +2,18 @@ package datatype;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Tree<T> {
 
 	T data;
-	HashSet<Tree<T>> children;
+	Set<Tree<T>> children;
 	Tree<T> parent;
 	
 	public Tree(T rootData) { //this should only be called when creating the root, otherwise addChild will be called
 		data = rootData;
-		children = new HashSet<Tree<T>>();
+		children = Collections.newSetFromMap(new ConcurrentHashMap<Tree<T>, Boolean>());
 		parent = null;
 	}
 
@@ -99,7 +100,7 @@ public class Tree<T> {
 	}
 
 
-	public HashSet<Tree<T>> getChildren() {
+	public Set<Tree<T>> getChildren() {
 		return children;
 	}
 	

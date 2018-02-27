@@ -15,7 +15,9 @@
 package ctrl;
 
 
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 //import libraries
 
@@ -37,31 +39,41 @@ public class LowpanNetwork
 	
 	//declaring local instance variables
 	private Tree<LowpanNode> network;
-	private HashSet<LowpanNode> orphanList;
+	private Set<LowpanNode> orphanList;
 	
 	//generic constructor
 	public LowpanNetwork()
 	{
 		//initialize
 		network = null;
-		orphanList = new HashSet<LowpanNode>();
+//		orphanList = new HashSet<LowpanNode>();
+		orphanList = Collections.newSetFromMap(new ConcurrentHashMap<LowpanNode, Boolean>());
 	}
 
 	
 	//create a new node
-	public boolean addNode(String name, int rank, LowpanNode parent)
+	public synchronized boolean addNode(String name, int rank, LowpanNode parent)
 	{
 		LowpanNode nodeToAdd = new LowpanNode(name, rank);
+		nodeToAdd.update();
+		
+		if (parent == null && rank == DODAG_RANK) { //it's the dodag root, add it as the root if it's empty
+			if (network == null) {
+				System.out.println("Adding the root");
+				network = new Tree<LowpanNode>(nodeToAdd);
+				return true;
+			}
+			network.getData().update();
+		}
+		
 		orphanList.remove(nodeToAdd); //don't bother checking, takes just as long if not longer than always removing
-		network.removeNode(nodeToAdd); //remove it here as well
-		if (parent == null && network == null && rank == DODAG_RANK) { //it's the dodag root, add it as the root if it's empty
-			System.out.println("Adding the root");
-			network = new Tree<LowpanNode>(nodeToAdd);
-			return true;
+		
+		if (network != null) {
+			network.removeNode(nodeToAdd); //remove it here as well
 		}
 		
 		if (network == null) {
-			System.out.println("You are not the dodag and there is no dodag, adding" + nodeToAdd + " to orphanList");
+			System.out.println("You are not the dodag and there is no dodag, adding " + nodeToAdd + " to orphanList");
 			orphanList.add(nodeToAdd);
 			return false; //we're waiting for the dodag
 		}
@@ -77,14 +89,29 @@ public class LowpanNetwork
 			
 //		System.out.println("OrphanList.contains returned " + orphanList.contains(nodeToAdd));
 		
-		return network.addNode(nodeToAdd, parent);
+		if (!network.addNode(nodeToAdd, parent)) {
+			System.out.println("Your parent couldn't be found, adding to orphanList");
+			orphanList.add(nodeToAdd);
+			return true;
+		}
+		
+		return true;
 		
 		
 	}
 	
+	public synchronized void addOrphan(LowpanNode node) { //should only be called if you are CERTAIN it should be an orphan
+		network.removeNode(node);
+		orphanList.add(node);
+	}
+	
 	//remove a node from simulation
-	public boolean removeNode(LowpanNode node)
+	public synchronized boolean removeNode(LowpanNode node)
 	{
+		if (node.equals(network.getData())) { //if it's the root
+			network = null;
+		}
+		orphanList.remove(node); //always remove it from the orphanList since this doesn't break on nulls
 		if (network == null) return true; //the network is empty, remove probably worked
 		
 		return network.removeNode(node);
@@ -92,20 +119,20 @@ public class LowpanNetwork
 	
 	
 	//remove all nodes from simulator
-	public void removeAllNodes()
+	public synchronized void removeAllNodes()
 	{
 		network = null;
 	}
 	
 	
 	//get all nodes in simulation
-	public Tree<LowpanNode> getNetwork()
+	public synchronized Tree<LowpanNode> getNetwork()
 	{
 		return network;
 	}	
 	
 	
-	public HashSet<LowpanNode> getOrphans(){
+	public synchronized Set<LowpanNode> getOrphans(){
 		return orphanList;
 	}
 	
@@ -115,6 +142,8 @@ public class LowpanNetwork
 		LowpanNetwork network = new LowpanNetwork();
 		NodeFrame nodeFrame = new NodeFrame(network);
 		NetListener nethandler = new NetListener(network, nodeFrame); //have to send it so that the callback function exists
+		ElementExpirer expirer = new ElementExpirer(network, nodeFrame); //so it can repaint on expiry
+		expirer.start(); //start the expirer
 		nethandler.start(); //start this thread so it can listen for packets
 		
 	}
