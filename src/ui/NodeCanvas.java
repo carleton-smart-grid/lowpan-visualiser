@@ -102,15 +102,16 @@ public class NodeCanvas extends JPanel
 		int drawableXSize = (xSize - XMARGIN) - CHILDLIST_WIDTH;
 		
 		g.setFont(new Font("ComicSans", Font.PLAIN, 20));
-		g.setColor(Color.BLACK);
+		g.setColor(Color.BLUE);
 		g.drawLine((xSize - XMARGIN) - CHILDLIST_WIDTH, 0, (xSize - XMARGIN) - CHILDLIST_WIDTH, ySize);
 		String s = "Lowpan Network";
-		g.drawString(s, drawableXSize/2 - (s.length() * HALFFONTWIDTH_20), YTOPMARGIN/2); //the top margin is where the drawing goes
+		g.drawString(s, YTOPMARGIN/2 /*drawableXSize/2 - (s.length() * HALFFONTWIDTH_20)*/, YTOPMARGIN/2); //the top margin is where the drawing goes
 		s = "Orphaned Nodes";
-		g.drawString(s, drawableXSize + (CHILDLIST_WIDTH/2) - (s.length() * HALFFONTWIDTH_20), YTOPMARGIN/2); //the top margin is where the drawing goes
+		g.drawString(s, drawableXSize + YTOPMARGIN/2/*+ (CHILDLIST_WIDTH/2) - (s.length() * HALFFONTWIDTH_20)*/, YTOPMARGIN/2); //the top margin is where the drawing goes
 		
 		int yIncrement;
 		g.setFont(new Font("ComicSans", Font.PLAIN, 16));
+		g.setColor(Color.BLACK);
 		
 		if (network.getNetwork() != null) { //wait until there's things to print
 			yIncrement = (int) Math.floor(drawableYSize/network.getNetwork().getDepth()); //need network for yIncrement, can't assign it until now		
