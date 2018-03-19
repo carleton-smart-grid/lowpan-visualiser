@@ -43,6 +43,7 @@ public class LowpanNetwork
 	public synchronized boolean addNode(String name, int rank, LowpanNode parent)
 	{
 		LowpanNode nodeToAdd = new LowpanNode(name, rank);
+		Tree<LowpanNode> treeToAdd = new Tree<LowpanNode>(nodeToAdd);
 		nodeToAdd.update();
 		
 		if (parent == null && rank == DODAG_RANK) { //it's the dodag root, add it as the root if it's empty
@@ -56,7 +57,12 @@ public class LowpanNetwork
 		
 		orphanList.remove(nodeToAdd); //don't bother checking, takes just as long if not longer than always removing
 		
-		if (network != null && !network.contains(nodeToAdd)) {
+		if(network.get(nodeToAdd) != null) {
+			treeToAdd = network.get(nodeToAdd);
+		}
+			
+		
+		if (network != null) {
 			network.removeNode(nodeToAdd); //remove it here as well
 		}
 		
@@ -72,15 +78,15 @@ public class LowpanNetwork
 			}
 			if (verbose) System.out.println("This node reported that it has no parent, moving to orphanList");
 			orphanList.add(nodeToAdd);
-			return true;
+			return false;
 		}
 			
 //		System.out.println("OrphanList.contains returned " + orphanList.contains(nodeToAdd));
 		
-		if (!network.addNode(nodeToAdd, parent)) {
+		if (!network.addNode(treeToAdd, parent)) {
 			if (verbose) System.out.println("Your parent couldn't be found, adding to orphanList");
 			orphanList.add(nodeToAdd);
-			return true;
+			return false;
 		}
 		
 		return true;
@@ -127,7 +133,10 @@ public class LowpanNetwork
 	//main runtime
 	public static void main(String[] args)
 	{
-		if (args.length > 0 && args[0] == "-v") LowpanNetwork.verbose = true;
+		if (args.length > 0 && args[0].equals("-v")) {
+			System.out.println("Enabling Verbosity");
+			LowpanNetwork.verbose = true;
+		}
 		LowpanNetwork network = new LowpanNetwork();
 		NodeFrame nodeFrame = new NodeFrame(network);
 		NetListener nethandler = new NetListener(network, nodeFrame); //have to send it so that the callback function exists

@@ -19,7 +19,7 @@ public class Tree<T> {
 
 	
 	//Recursively calls addNode working down the tree, if every single function returns false, the parent can't be found and the root function returns false
-	public boolean addNode(T nodeToAdd, T parentToLeaf) {
+	public boolean addNode(Tree<T> nodeToAdd, T parentToLeaf) {
 //		System.out.println("Searching in " + data.toString());
 		if (data.equals(parentToLeaf)) { //the root starts the chain, so this check has to be done
 //			System.out.println("Found the parent, it is " + getData().toString());
@@ -43,8 +43,7 @@ public class Tree<T> {
 	}
 
 
-	public boolean addChild(T nodeToAdd) {
-		Tree<T> tToAdd = new Tree<T>(nodeToAdd);
+	public boolean addChild(Tree<T> tToAdd) {
 		if (!children.contains(tToAdd)) {
 //			children.remove(tToAdd);
 			children.add(tToAdd);
@@ -97,6 +96,22 @@ public class Tree<T> {
 			if (rc) return true;
 		}
 		return false;
+	}
+	
+	public Tree<T> get(T node){
+		Tree<T> rc = null;		
+		
+		for (Tree<T> child : children) {
+			
+			if (child.getData().equals(node)) { //base case
+				System.out.println("Found the node");
+				return child;
+			}
+			
+			rc = child.get(node);
+			if (rc != null) return rc;
+		}
+		return null;
 	}
 
 
