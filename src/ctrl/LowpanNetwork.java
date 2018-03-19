@@ -1,17 +1,3 @@
-/**
- * Class:				LowpanSim.java
- * Project:				Lowpan Network Sim
- * Author:				Jason Van Kerkhoven
- * Date of Update:		25/11/2017
- * Version:				1.0.0
- * 
- * Purpose:				Draw a lowpan mesh network using intuitive user controls.
- * 						Build to allow users to better grasp the goal of the overall project.
- * 						Support various strength lowpan nodes for realism.
- * 
- * Update Log:			v1.0.0
- * 							- null
- */
 package ctrl;
 
 
@@ -31,11 +17,13 @@ import ui.NodeFrame;
 
 public class LowpanNetwork
 {
-	//declaring static class constants
+	//declaring static class constants	
 	public static final int MIN_XY = 10;
 	public static final int DODAG_RANK = 256;
 	public static final int INFINITE_RANK = 65535;
 	public static final String DEFAULT_NAME = "new_node";
+
+	public static boolean verbose = false;
 	
 	//declaring local instance variables
 	private Tree<LowpanNode> network;
@@ -59,7 +47,7 @@ public class LowpanNetwork
 		
 		if (parent == null && rank == DODAG_RANK) { //it's the dodag root, add it as the root if it's empty
 			if (network == null) {
-				System.out.println("Adding the root");
+				if (verbose) System.out.println("Adding the root");
 				network = new Tree<LowpanNode>(nodeToAdd);
 				return true;
 			}
@@ -68,12 +56,12 @@ public class LowpanNetwork
 		
 		orphanList.remove(nodeToAdd); //don't bother checking, takes just as long if not longer than always removing
 		
-		if (network != null) {
+		if (network != null && !network.contains(nodeToAdd)) {
 			network.removeNode(nodeToAdd); //remove it here as well
 		}
 		
 		if (network == null) {
-			System.out.println("You are not the dodag and there is no dodag, adding " + nodeToAdd + " to orphanList");
+			if (verbose) System.out.println("You are not the dodag and there is no dodag, adding " + nodeToAdd + " to orphanList");
 			orphanList.add(nodeToAdd);
 			return false; //we're waiting for the dodag
 		}
@@ -82,7 +70,7 @@ public class LowpanNetwork
 			if(rank == DODAG_RANK) { //don't add the dodag again and don't remove it, it never has a parent
 				return true;
 			}
-			System.out.println("This node reported that it has no parent, moving to orphanList");
+			if (verbose) System.out.println("This node reported that it has no parent, moving to orphanList");
 			orphanList.add(nodeToAdd);
 			return true;
 		}
@@ -90,7 +78,7 @@ public class LowpanNetwork
 //		System.out.println("OrphanList.contains returned " + orphanList.contains(nodeToAdd));
 		
 		if (!network.addNode(nodeToAdd, parent)) {
-			System.out.println("Your parent couldn't be found, adding to orphanList");
+			if (verbose) System.out.println("Your parent couldn't be found, adding to orphanList");
 			orphanList.add(nodeToAdd);
 			return true;
 		}
@@ -139,6 +127,7 @@ public class LowpanNetwork
 	//main runtime
 	public static void main(String[] args)
 	{
+		if (args.length > 0 && args[0] == "-v") LowpanNetwork.verbose = true;
 		LowpanNetwork network = new LowpanNetwork();
 		NodeFrame nodeFrame = new NodeFrame(network);
 		NetListener nethandler = new NetListener(network, nodeFrame); //have to send it so that the callback function exists
