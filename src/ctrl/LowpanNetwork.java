@@ -43,8 +43,8 @@ public class LowpanNetwork
 	public synchronized boolean addNode(String name, int rank, LowpanNode parent)
 	{
 		LowpanNode nodeToAdd = new LowpanNode(name, rank);
-		Tree<LowpanNode> treeToAdd = new Tree<LowpanNode>(nodeToAdd);
 		nodeToAdd.update();
+		Tree<LowpanNode> treeToAdd = new Tree<LowpanNode>(nodeToAdd);
 		
 		if (parent == null && rank == DODAG_RANK) { //it's the dodag root, add it as the root if it's empty
 			if (network == null) {
