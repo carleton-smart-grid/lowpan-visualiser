@@ -55,10 +55,13 @@ public class LowpanNetwork
 			network.getData().update();
 		}
 		
+		if (network == null) return false;
+		
 		orphanList.remove(nodeToAdd); //don't bother checking, takes just as long if not longer than always removing
 		
 		if(network.get(nodeToAdd) != null) {
 			treeToAdd = network.get(nodeToAdd);
+			treeToAdd.getData().setRank(rank);
 		}
 			
 		

@@ -123,4 +123,9 @@ public class LowpanNode
 	{
 		return "Node " + name;
 	}
+
+
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
 }
